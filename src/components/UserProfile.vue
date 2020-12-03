@@ -8,19 +8,29 @@
       <div class="user-profile__follower-count">
         <strong>Followers: </strong> {{ followers }}
       </div>
+      <form class="user-profile__create-twoot">
+        <label for="newTwoot"><strong>New Twoot</strong></label>
+        <textarea id="newTwoot" rows="4"></textarea>
+      </form>
     </div>
     <div class="user-profile__twoots-wrapper">
-        <div class="user-profile__twoot" v-for="twoot in user.twoots" :key="twoot.id">
-            {{ twoot.content }}
-        </div>
+        <TwootItem 
+          v-for="twoot in user.twoots" 
+          :key="twoot.id" 
+          :username="user.username" 
+          :twoot="twoot" 
+          @favourite = "toggleFavourite"
+        />
     </div>
   </div>
 </template>
 
 <script>
+import TwootItem from './TwootItem'
 
 export default {
   name: 'UserProfile',
+  components: {TwootItem},
   data() {
     return{
       followers: 0,
@@ -53,6 +63,9 @@ export default {
   methods: {
     followUsers() {
       this.followers++;
+    },
+    toggleFavourite(id){
+      console.log(`Favourited Twoot #${id}`);
     }
   },
   mounted () {
@@ -87,6 +100,12 @@ export default {
     margin-right: auto;
     padding: 0 10px;
     font-weight: bold;
+}
+
+.user-profile__create-twoot{
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
 }
 
 h1{
